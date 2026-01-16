@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Repositório de Logos – CECIA</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --cecia-red: #8b0000;
+  --text: #222;
+  --blue1: #007cf0;
+  --blue2: #00dfd8;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, Arial, sans-serif;
+  background: white;
+  color: var(--text);
+}
+
+/* ===== HEADER ===== */
+.header {
+  background: var(--cecia-red);
+  padding: 18px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.header-inner {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+}
+
+.header img { height: 90px; }
+
+.title { text-align: center; }
+
+.course {
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--blue1), var(--blue2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cecia {
+  color: white;
+  font-size: 18px;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.ufsj {
+  font-size: 14px;
+  color: #eee;
+}
+
+/* ===== CONTEÚDO ===== */
+.main {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 24px;
+}
+
+.intro p {
+  max-width: 900px;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* ===== BOTÃO DOWNLOAD ===== */
+.download-all {
+  margin: 24px 0 32px;
+}
+
+.download-all a {
+  display: inline-block;
+  padding: 14px 22px;
+  background: var(--cecia-red);
+  color: white;
+  font-weight: 700;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: transform 0.1s ease, opacity 0.1s ease;
+}
+
+.download-all a:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ===== LOGOS ===== */
+.logo-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 18px 0;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.logo-item img {
+  max-height: 90px;
+  max-width: 220px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px;
+  background: white;
+  object-fit: contain;
+}
+
+.logo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.logo-actions strong {
+  font-size: 15px;
+}
+
+.logo-actions a {
+  color: #0047ab;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.logo-actions a:hover {
+  text-decoration: underline;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin: 60px 0 30px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <img src="https://cecia.ufsj.edu.br/assets/logo-ufsj-D8UfR3Y2.png">
+
+    <div class="title">
+      <div class="course">Engenharia da Computação e Inteligência Artificial</div>
+      <div class="cecia">CECIA</div>
+      <div class="ufsj">Universidade Federal de São João del-Rei – UFSJ</div>
+    </div>
+
+    <img src="https://cecia.ufsj.edu.br/assets/mascote-labs-XYBaCOvj.png">
+  </div>
+</div>
+
+<div class="main">
+
+<h2>Repositório Oficial de Logos</h2>
+
+<div class="intro">
+  <p>
+    Esta página reúne os <strong>logos institucionais oficiais da CECIA/UFSJ</strong>,
+    disponíveis para visualização e download.
+  </p>
+  <p>
+    Estão disponíveis versões em <strong>PNG</strong> (sem fundo) e <strong>JPG</strong>,
+    com opções para aplicação sobre fundo claro (coloridas e em preto)
+    e sobre fundo escuro (brancas).
+  </p>
+  <p>
+    <strong>Os materiais foram desenvolvidos pela Assessoria de Comunicação da UFSJ</strong>,
+    em conformidade com a identidade visual oficial da Universidade Federal de São João del-Rei.
+  </p>
+</div>
+
+<div class="download-all">
+  <a href="https://drive.google.com/drive/folders/1cPozyjCP43A2JFttCemR_YtG2U0Fs889"
+     target="_blank">
+    ⬇ Baixar todos os logos (ZIP)
+  </a>
+</div>
+
+<div id="content">Carregando logos...</div>
+
+</div>
+
+<script>
+const API_KEY = "AIzaSyACMK-L2y2-ZyJkwSkuu992Zug1dPFZgQM";
+const ROOT_FOLDER = "1cPozyjCP43A2JFttCemR_YtG2U0Fs889";
+const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg"];
+
+async function api(q) {
+  const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name)&supportsAllDrives=true&includeItemsFromAllDrives=true&key=${API_KEY}`;
+  const r = await fetch(url);
+  return (await r.json()).files || [];
+}
+
+async function load() {
+  const content = document.getElementById("content");
+  content.innerHTML = "";
+
+  const files = await api(
+    `'${ROOT_FOLDER}' in parents and mimeType!='application/vnd.google-apps.folder'`
+  );
+
+  const images = files.filter(f =>
+    IMAGE_EXTENSIONS.some(ext => f.name.toLowerCase().endsWith(ext))
+  );
+
+  images.forEach(f => {
+    content.innerHTML += `
+      <div class="logo-item">
+        <img src="https://drive.google.com/thumbnail?id=${f.id}&sz=w300" alt="${f.name}">
+        <div class="logo-actions">
+          <strong>${f.name}</strong>
+          <a href="https://drive.google.com/uc?id=${f.id}&export=download">Baixar arquivo</a>
+          <a target="_blank" href="https://drive.google.com/file/d/${f.id}/view">Abrir no Google Drive</a>
+        </div>
+      </div>
+    `;
+  });
+}
+
+load();
+</script>
+
+<div class="footer">
+Repositório institucional mantido pela CECIA – UFSJ.
+</div>
+
+</body>
+</html>
